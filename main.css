@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
+
+
+html, body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background: #ddd;
+    font-family: 'Libre Baskerville', serif;
+
+}
+
+html, body {
+    height: 100%;
+  }
+
+
+#app {
+    box-sizing: border-box;
+    margin: 20px auto 0 auto;
+    width: 95vw;
+    text-align: center;
+    background: linear-gradient(to bottom right, rgba(0, 140, 255, 0.79), #11111150);
+    box-shadow: 5px 5px 15px black;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#tooltip {
+    background: #333;
+    color: #bbb;
+    padding: 5px;
+    transition: .1s ease;
+
+}
+
+rect {
+    fill: darkblue;
+    opacity: 0.3;
+    stroke: white;
+  }
+  text {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+  }
+  g text {
+    fill: white;
+    font-size: 10px;
+  }

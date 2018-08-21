@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>D3 Treemap of Videogame Sales</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script src="main.js"></script>
+
+    <footer>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG"
+        crossorigin="anonymous">
+      
+      <style>
+        footer {
+          width: -webkit-fill-available;
+          display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #888;
+    text-align: center;
+  }
+  
+  footer a {
+    text-decoration: none;
+    color: rgb(160, 43, 11);
+    transition: ease-out 0.1s;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+        </style>
+  
+      <div id="copyright">
+          <p>Created by Greg McKelvey &copy;
+              <script type="text/javascript">
+                  document.write(new Date().getFullYear());
+              </script>
+          </p>
+      </div>
+  
+      <div id="socMeds">
+          <a href="https://twitter.com/Whyisbecause" target="_blank">
+              <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://www.facebook.com/whyisbecause" target="_blank">
+              <i class="fab fa-facebook"></i>
+          </a>
+          <a href="https://github.com/mckelveygreg" target="_blank" id="profile-link">
+              <i class="fab fa-github" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.freecodecamp.org/mckelveygreg" target="_blank">
+              <i class="fab fa-free-code-camp"></i>
+          </a>
+          <a href="https://codepen.io/mckelveygreg/" target="_blank">
+              <i class="fab fa-codepen"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/greg-mckelvey-6b0125153/" target="_blank">
+              <i class="fab fa-linkedin"></i>
+          </a>
+  
+      </div>
+  
+      <div id="viewSource">
+          <p>View
+              <a id="sourceURL">Source Code</a> on GitHub!</p>
+          <script type="text/javascript">var sourceURL = "https://github.com/mckelveygreg" + window.location.pathname;
+              var sourceA = document.querySelector('#sourceURL');
+              sourceA.setAttribute('href', sourceURL);
+          </script>
+      </div>
+  
+  </footer>
+
+
+    <!-- <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script> -->
+</body>
+</html>
