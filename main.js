@@ -6,13 +6,15 @@ const videoGameURL =
 d3.json(videoGameURL).then(data => buildGraph(data));
 
 const buildGraph = data => {
-  const width = app.clientWidth;
-  const height = app.clientHeight;
+	const margin = {top: 10, right: 10, bottom: 200, left: 10}
+
+  const width = 1200 - margin.left - margin.right;//app.clientWidth;
+  const height = 800 - margin .top - margin.bottom;//app.clientHeight;
   const svg = d3
     .select(app)
     .append("svg")
-    .attr("width", 1200)
-    .attr("height", 700);
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom);
 
   const root = d3
     .hierarchy(data)
@@ -23,15 +25,14 @@ const buildGraph = data => {
   // categories
   const categories = root.children.map(d => d.data.name);
 	
-	const colors = d3.quantize(d3.interpolateRainbow, categories.length);
-	console.log(colors);
+	const colors = d3.quantize(d3.interpolateRainbow, categories.length + 1); // color goes full circle without the +1
 	const colorScale = d3.scaleOrdinal()
 												.domain(categories)
 												.range(colors);
 	
   const treemapLayout = d3.treemap();
   treemapLayout
-    .size([1200, 700])
+    .size([width, height])
     .paddingOuter(3)
     .paddingInner(3);
 
@@ -72,7 +73,7 @@ const buildGraph = data => {
 
   // Text Wrap from: https://bl.ocks.org/mbostock/7555321
   function wrap(text, width) {
-    text.nodes().forEach(name => {
+    text.nodes().forEach(name => { // updated each() to nodes.()forEach()
       var text = d3.select(name),
         words = text
           .text()
@@ -107,5 +108,45 @@ const buildGraph = data => {
         }
       }
     });
-  }
+	}
+	// Legend
+	const legendWidth = 500;
+	const legendHeight = 200;
+	const legend = svg.append('g')
+											.attr('id', 'legend')
+											.attr('width', legendWidth)
+											.attr('height', legendHeight)
+											.attr('transform', `translate(${0.1*width},${height+20})`)
+									
+	const legendElem = legend.append('g')
+		.selectAll('g')
+		.data(categories)
+		.enter()
+		.append('g')
+		.attr('transform', (d,i) => transformGrid(i))
+
+
+legendElem.append('rect')
+		.attr('width', 20)
+		.attr('height', 20)
+		.style('fill', d => colorScale(d))
+		.attr('data-category', d => d)
+
+legendElem.append('text')
+		.text(d => d)
+		.attr('x', 25)
+		.attr('y', 17)
+		.style('font-size', 20);
+
+function transformGrid (index) {
+	let x, y;
+	const hSpacing = 120;
+	const vSpacing = 50;
+	const elemPerRow = 6;
+	x = (index%elemPerRow)*hSpacing;
+	y = (Math.floor(index/elemPerRow))*vSpacing;
+
+	return `translate(${x},${y})`;
+}
+
 };
