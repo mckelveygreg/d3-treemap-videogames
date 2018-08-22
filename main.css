@@ -48,3 +48,7 @@ rect {
     fill: white;
     font-size: 10px;
   }
+
+  .tile {
+      fill: red;
+  }

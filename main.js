@@ -30,38 +30,62 @@ const buildGraph = (data) => {
     
     treemapLayout(root);
     
-    svg.append('g')
-        .selectAll('rect')
+    const nodes = svg
+        .selectAll('g')
         .data(root.descendants())
         .enter()
-        .append('rect')
+        .append('g')
+
+    nodes.append('rect')
         .attr('x', d => d.x0)
         .attr('y', d => d.y0)
         .attr('width', d => d.x1 - d.x0)
         .attr('height', d => d.y1 - d.y0)
+        .attr('data-rando', 'random')
+        //.attr('transform', d => `translate(${[d.x0, d.y0]})`)
         .attr('class', 'tile')
-        //.attr('data-name', )
-       // .attr('fill', d => console.log(d))
-
-    const nodes = svg.append('g')
-                    .selectAll('g')
-                    .data(root.descendants())
-                    .enter()
-                    .append('g')
-                    .attr('transform', d => `translate(${[d.x0, d.y0]})`);
-
-        nodes
-            .append('rect')
-            .attr('width', d => d.x1 - d.x0)
-            .attr('height', d => d.y1 - d.y0)
-        nodes
-            .append('text')
+        .attr('data-name', d => d.data.name)
+        .attr('data-category', d => d.data.category)
+        .attr('data-value', d => d.data.value)
+        
+    nodes.append('text')
+        .style('fill', 'black')
             .attr('dx', 3)
             .attr('dy', 15)
             .attr('x', 6) // wouldn't place right till I added x and y.. ?
             .attr('y', 15)
-            .text(d => d.data.name)
-            .call(wrap, 50);
+            .attr('transform', d => `translate(${[d.x0, d.y0]})`)
+
+        .text(d => d.data.name)
+        .call(wrap, 50)
+
+// const nodes = svg.append('g')
+//                     .selectAll('g')
+//                     .data(root.descendants())
+//                     .enter()
+//                     .append('g')
+//                     .attr('transform', d => `translate(${[d.x0, d.y0]})`);
+
+        // nodes
+        //     .append('rect')
+        //     .attr('width', d => d.x1 - d.x0)
+        //     .attr('height', d => d.y1 - d.y0)
+
+        // .attr('fill', d => console.log(d.data))
+    //const nodes = svg
+            //.selectAll('.tile')
+            //.append('text')
+            //.data(root.descendants())
+            //.enter()
+            //.append('text')
+            //.attr('dx', 3)
+            //.attr('dy', 15)
+            //.attr('x', 6) // wouldn't place right till I added x and y.. ?
+            //.attr('y', 15)
+            //.attr('transform', d => `translate(${[d.x0, d.y0]})`)
+
+            //.text(d => d.data.name)
+            //.call(wrap, 50);
 
 
     // Text Wrap from: https://bl.ocks.org/mbostock/7555321
