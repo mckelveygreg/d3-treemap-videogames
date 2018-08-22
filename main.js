@@ -11,8 +11,8 @@ const buildGraph = data => {
   const svg = d3
     .select(app)
     .append("svg")
-    .attr("width", 1500)
-    .attr("height", 1000);
+    .attr("width", 1200)
+    .attr("height", 700);
 
   const root = d3
     .hierarchy(data)
@@ -20,13 +20,18 @@ const buildGraph = data => {
     .sort((a, b) => b.height - a.height || b.value - a.value); // Makes PacMan show up with the other smalls
   //console.log(root);
 
-  // catagories
-  const catagories = root.children.map(d => d.data.name);
-  console.log(catagories);
+  // categories
+  const categories = root.children.map(d => d.data.name);
+	
+	const colors = d3.quantize(d3.interpolateRainbow, categories.length);
+	console.log(colors);
+	const colorScale = d3.scaleOrdinal()
+												.domain(categories)
+												.range(colors);
+	
   const treemapLayout = d3.treemap();
-
   treemapLayout
-    .size([1500, 1000])
+    .size([1200, 700])
     .paddingOuter(3)
     .paddingInner(3);
 
@@ -47,18 +52,19 @@ const buildGraph = data => {
     .attr("width", d => d.x1 - d.x0)
     .attr("height", d => d.y1 - d.y0)
     .attr("data-rando", "random")
-    .attr("class", "tile")
+    //.attr("class", "tile")
     .attr("data-name", d => d.data.name)
     .attr("data-category", d => d.data.category)
-    .attr("data-value", d => d.data.value);
+		.attr("data-value", d => d.data.value)
+		.style('fill', d => colorScale(d.data.category))
 
   nodes
     .append("text")
     .style("fill", "black")
-    .attr("dx", 3)
-    .attr("dy", 15)
-    .attr("x", 6) // wouldn't place right till I added x and y.. ?
-    .attr("y", 15)
+    //.attr("dx", 0)
+    //.attr("dy", 15) // don't know what it adjusts...
+    .attr("x", 2) // positions text in rect
+    .attr("y", 12)
     .attr("transform", d => `translate(${[d.x0, d.y0]})`)
 
     .text(d => d.data.name)
