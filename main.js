@@ -15,8 +15,11 @@ const buildGraph = (data) => {
     const root = d3.hierarchy(data)
     .sum(d => d.value)
       .sort((a, b) => b.height - a.height || b.value - a.value); // Makes PacMan show up with the other smalls
-    // console.log(root);
+    //console.log(root);
 
+    // catagories
+    const catagories = root.children.map(d => d.data.name)
+    console.log(catagories);
     const treemapLayout = d3.treemap();
 
     treemapLayout.size([1500, 1000])
@@ -36,6 +39,9 @@ const buildGraph = (data) => {
         .attr('y', d => d.y0)
         .attr('width', d => d.x1 - d.x0)
         .attr('height', d => d.y1 - d.y0)
+        .attr('class', 'tile')
+        //.attr('data-name', )
+       // .attr('fill', d => console.log(d))
 
     const nodes = svg.append('g')
                     .selectAll('g')
