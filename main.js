@@ -27,7 +27,6 @@ const buildGraph = (data) => {
     
     treemapLayout(root);
     
-    console.log(root.descendants());
     svg.append('g')
         .selectAll('rect')
         .data(root.descendants())
@@ -38,23 +37,58 @@ const buildGraph = (data) => {
         .attr('width', d => d.x1 - d.x0)
         .attr('height', d => d.y1 - d.y0)
 
-    // var nodes = svg.select('g')
-    //     .selectAll('g')
-    //     .data(root.descendants())
-    //     .enter()
-    //     .append('g')
-    //     .attr('transform', function(d) {return 'translate(' + [d.x0, d.y0] + ')'})
-      
-    //   nodes
-    //     .append('rect')
-    //     .attr('width', function(d) { return d.x1 - d.x0; })
-    //     .attr('height', function(d) { return d.y1 - d.y0; })
-      
-    //   nodes
-    //     .append('text')
-    //     .attr('dx', 4)
-    //     .attr('dy', 14)
-    //     .text(function(d) {
-    //       return d.data.name;
-    //     })
+    const nodes = svg.append('g')
+                    .selectAll('g')
+                    .data(root.descendants())
+                    .enter()
+                    .append('g')
+                    .attr('transform', d => `translate(${[d.x0, d.y0]})`);
+
+        nodes
+            .append('rect')
+            .attr('width', d => d.x1 - d.x0)
+            .attr('height', d => d.y1 - d.y0)
+        nodes
+            .append('text')
+            .attr('dx', 3)
+            .attr('dy', 15)
+            .attr('x', 6) // wouldn't place right till I added x and y.. ?
+            .attr('y', 15)
+            .text(d => d.data.name)
+            .call(wrap, 50);
+
+
+    // Text Wrap from: https://bl.ocks.org/mbostock/7555321
+    function wrap(text, width) {
+        text.nodes().forEach((name) => {
+            var text = d3.select(name),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1 // ems??
+                x = text.attr('x')
+                y = text.attr('y'),
+                dy = 0, //parseFloat(text.attr('dy')),
+                tspan = text.text(null)
+                            .append('tspan')
+                            .attr('x', x)
+                            .attr('y', y)
+                            .attr('dy', dy + 'em');
+            while(word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(' '));
+                if(tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(' '));
+                    line = [word];
+                    tspan = text.append('tspan')
+                                .attr('x', x)
+                                .attr('y', y)
+                                .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+                                .text(word);
+                }
+            } 
+        });
+    }
 }

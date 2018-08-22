@@ -37,7 +37,7 @@ html, body {
 
 rect {
     fill: darkblue;
-    opacity: 0.3;
+    opacity: 1;
     stroke: white;
   }
   text {
