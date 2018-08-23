@@ -17,8 +17,8 @@ html, body {
 
 #app {
     box-sizing: border-box;
-    margin: 20px auto 0 auto;
-    width: 95vw;
+    width: 1150;
+    height: 750;
     text-align: center;
     background: linear-gradient(to bottom right, rgba(0, 140, 255, 0.79), #11111150);
     box-shadow: 5px 5px 15px black;
@@ -34,21 +34,16 @@ html, body {
     transition: .1s ease;
 
 }
-
-rect {
-    fill: darkblue;
-    opacity: 1;
-    stroke: white;
-  }
-  text {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 12px;
-  }
-  g text {
+ 
+text {
     fill: white;
-    font-size: 10px;
+    font-size: 8px;
   }
 
-  .tile {
-      fill: red;
-  }
+  #tooltip {
+    background: #333;
+    color: #bbb;
+    padding: 5px;
+    transition: .1s ease;
+
+}

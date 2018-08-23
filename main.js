@@ -6,7 +6,7 @@ const videoGameURL =
 d3.json(videoGameURL).then(data => buildGraph(data));
 
 const buildGraph = data => {
-	const margin = {top: 10, right: 10, bottom: 200, left: 10}
+	const margin = {top: 10, right: 10, bottom: 150, left: 10}
 
   const width = 1200 - margin.left - margin.right;//app.clientWidth;
   const height = 800 - margin .top - margin.bottom;//app.clientHeight;
@@ -20,7 +20,6 @@ const buildGraph = data => {
     .hierarchy(data)
     .sum(d => d.value)
     .sort((a, b) => b.height - a.height || b.value - a.value); // Makes PacMan show up with the other smalls
-  //console.log(root);
 
   // categories
   const categories = root.children.map(d => d.data.name);
@@ -29,20 +28,27 @@ const buildGraph = data => {
 	const colorScale = d3.scaleOrdinal()
 												.domain(categories)
 												.range(colors);
-	
+  
+  // tooltip
+  const tooltip = d3.select('body')
+                    .append('div')
+                    .style('position', 'absolute')
+                    .style('opacity', 0)
+                    .attr('id', 'tooltip');
+  
+  // Treemap
   const treemapLayout = d3.treemap();
   treemapLayout
     .size([width, height])
-    .paddingOuter(3)
+    
     .paddingInner(3);
 
   treemapLayout.tile(d3.treemapBinary);
 
   treemapLayout(root);
-
   const nodes = svg
     .selectAll("g")
-    .data(root.descendants())
+    .data(root.leaves()) // only uses nodes with no children, unlike descenants()
     .enter()
     .append("g");
 
@@ -52,12 +58,28 @@ const buildGraph = data => {
     .attr("y", d => d.y0)
     .attr("width", d => d.x1 - d.x0)
     .attr("height", d => d.y1 - d.y0)
-    .attr("data-rando", "random")
-    //.attr("class", "tile")
+    .attr("class", "tile")
     .attr("data-name", d => d.data.name)
-    .attr("data-category", d => d.data.category)
 		.attr("data-value", d => d.data.value)
-		.style('fill', d => colorScale(d.data.category))
+    .attr("data-category", d => d.data.category)
+    .style('fill', d => colorScale(d.data.category))
+    .on('mouseover', (d,i) => {
+      tooltip.style('opacity', 0.8)
+              .attr('data-value', d.data.value)
+              .style('z-index', 10)
+              .html(
+                `Name: ${d.data.name}</br>
+                Category: ${d.data.category}</br>
+                Value: ${d.data.value}`
+              )
+    })
+    .on('mousemove', () => (
+      tooltip.style('top', (d3.event.pageY - 20) + 'px')
+              .style('left', (d3.event.pageX + 10) + 'px')
+
+    ))
+    .on('mouseout', () => tooltip.style('opacity', 0)
+                                  .style('z-index', -1))
 
   nodes
     .append("text")
@@ -111,12 +133,13 @@ const buildGraph = data => {
 	}
 	// Legend
 	const legendWidth = 500;
-	const legendHeight = 200;
+  const legendHeight = margin.bottom;
+  const legendMargin = (width - legendWidth)/3
 	const legend = svg.append('g')
 											.attr('id', 'legend')
 											.attr('width', legendWidth)
 											.attr('height', legendHeight)
-											.attr('transform', `translate(${0.1*width},${height+20})`)
+											.attr('transform', `translate(${legendMargin},${height+20})`)
 									
 	const legendElem = legend.append('g')
 		.selectAll('g')
@@ -127,6 +150,7 @@ const buildGraph = data => {
 
 
 legendElem.append('rect')
+    .attr('class', 'legend-item')
 		.attr('width', 20)
 		.attr('height', 20)
 		.style('fill', d => colorScale(d))
